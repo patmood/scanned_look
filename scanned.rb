@@ -16,12 +16,7 @@ get "/download/:filename" do |filename|
 end
 
 post "/upload" do
-  p "============ PARAMS ================"
-  p params
-  p params['myfile'][:type] == 'image/gif'
-  p params['myfile'][:type] == 'application/pdf'
-
-
+  raise "Must be a PDF" unless params['myfile'][:type] == 'application/pdf'
   tempfile = params['myfile'][:tempfile]
   filename = params['myfile'][:filename]
   filename.gsub!(/\s/,"") if /\s/.match(filename)
@@ -48,27 +43,11 @@ post "/upload" do
     File.delete("#{Dir.pwd}/converted/#{filename}-#{page}-scanned.pdf")
   end
 
-
-  return "The file was successfully scanned! <a href='download/#{filename}-scanned.pdf'>Download!</a>"
+  # return "The file was successfully scanned! <a href='download/#{filename}-scanned.pdf'>Download!</a>"
+  redirect "download/#{filename}-scanned.pdf"
 end
 
 
 # convert test.pdf -mattecolor gray99 -frame 1x1+1 -colorspace gray \( +clone -blur 0x1 \) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate 1 as-scanned.jpg
 # Merge PDFs in directory with ghostscript
 # gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=temp.pdf pdf1.pdf pdf2.pdf
-
-
-__END__
-@@index
-
-<h1>Scanned Look</h1>
-<form action="/upload" method="post" enctype="multipart/form-data">
-  <input type="file" name="myfile">
-  <input type="submit">
-</form>
-
-<h2>To Do:</h2>
-<ul>
-  <li>Check file type</li>
-  <li>Delete files after download</li>
-</ul>
