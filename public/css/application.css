@@ -19,6 +19,7 @@ h2 {
 }
 
 .center { text-align: center; }
+.center img { margin: auto; }
 .container { padding: 10px;}
 
 #scanner {

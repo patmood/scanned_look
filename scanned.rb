@@ -40,8 +40,10 @@ class Scanned < Sinatra::Base
       File.delete("#{Dir.pwd}/converted/#{filename}-#{page}-scanned.pdf")
     end
 
-    return "The file was successfully scanned! <a href='download/#{filename}-scanned.pdf'>Download!</a>"
-    # redirect "download/#{filename}-scanned.pdf"
+    # return "The file was successfully scanned! <a href='download/#{filename}-scanned.pdf'>Download!</a>"
+    redirect "download/#{filename}-scanned.pdf"
+
+
   end
 
 
