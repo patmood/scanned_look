@@ -1,7 +1,8 @@
 <h1>Pat's PDF Thing</h1>
+
 <div id="scanner">
-  <form action="/upload" method="post" enctype="multipart/form-data">
+  <div id="select">Choose File</div>
+  <form action="/upload" method="post" enctype="multipart/form-data" id="uploader" hidden>
     <input type="file" name="myfile">
-    <input type="submit">
   </form>
 </div>
