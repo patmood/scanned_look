@@ -1,0 +1,20 @@
+@import url(http://fonts.googleapis.com/css?family=Francois+One);
+
+h1 {
+  font-family: 'Francois One', sans-serif;
+  line-height: 1.1em;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 72px;
+  color: #222;
+  text-align: center;
+}
+
+#scanner {
+  max-width: 600px;
+  min-height: 400px;
+  margin: auto;
+  background:url('../images/scanner.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
