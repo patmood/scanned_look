@@ -13,7 +13,7 @@ class Scanned < Sinatra::Base
   end
 
   post "/upload" do
-    # raise "Must be a PDF" unless params['myfile'][:type] == 'application/pdf'
+    raise "Must be a PDF" unless params['myfile'][:type] == 'application/pdf'
     tempfile = params['myfile'][:tempfile]
     filename = params['myfile'][:filename]
     filename.gsub!(/\s/,"") if /\s/.match(filename)
