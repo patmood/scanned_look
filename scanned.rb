@@ -39,13 +39,23 @@ class Scanned < Sinatra::Base
     page_paths = []
 
     # "Scan" each page
-    pages.times do |page|
-      system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand - 0.5} #{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
-      page_paths << "#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf"
+    begin
+      pages.times do |page|
+        system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand - 0.5} #{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
+        page_paths << "#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf"
+      end
+    rescue
+      session[:notice] = "Failed to scan properly :("
+      redirect "/"
     end
 
     # Combine pages into single PDF
-    system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename_stripped}-scanned.pdf #{page_paths.join(' ')}")
+    begin
+      system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename_stripped}-scanned.pdf #{page_paths.join(' ')}")
+    rescue
+      session[:notice] = "Failed to combine pages :("
+      redirect "/"
+    end
 
     # Delete scanned pages
     page_paths.each do |page|
