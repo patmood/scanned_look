@@ -33,13 +33,13 @@ class Scanned < Sinatra::Base
     # Combine pages into single PDF
     system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename_stripped}-scanned.pdf #{page_paths.join(' ')}")
 
+    # Delete scanned pages
+    page_paths.each do |page|
+      File.delete(page)
+    end
+
     # Delete original upload
     File.delete("#{Dir.pwd}/uploads/#{filename}")
-
-    # Delete scanned pages
-    pages.times do |page|
-      File.delete("#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
-    end
 
     return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
     # redirect "download/#{filename_stripped}-scanned.pdf"
