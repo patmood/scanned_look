@@ -20,8 +20,16 @@ class Scanned < Sinatra::Base
     filename_stripped = filename.gsub(/\.\w+\z/,"")
     FileUtils.copy(tempfile.path, "uploads/#{filename}")
 
-    # Count pages
-    pages = PDF::Reader.new("uploads/#{filename}").page_count
+    # Check input
+    if params['myfile'][:type].match(/image\/\w+/)
+      pages = 1
+    elsif params['myfile'][:type].match(/application\/pdf/)
+      # Count pages
+      pages = PDF::Reader.new("uploads/#{filename}").page_count
+    else
+      raise "Must be PDF or image"
+    end
+
     page_paths = []
 
     # "Scan" each page
