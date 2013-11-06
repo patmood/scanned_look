@@ -23,9 +23,9 @@ h2 {
 .container { padding: 10px;}
 
 #scanner {
-  max-width: 600px;
-  min-height: 200px;
-  padding-top: 70px;
+  max-width: 500px;
+  min-height: 300px;
+  padding-top: 50px;
   margin: auto;
   background:url('../images/scanner.jpg');
   background-size: contain;
