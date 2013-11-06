@@ -18,7 +18,7 @@ class Scanned < Sinatra::Base
   end
 
   post "/upload" do
-    p params
+    session[:notice] = nil
     tempfile = params['myfile'][:tempfile]
     filename = params['myfile'][:filename]
     filename.gsub!(/\s/,"") if /\s/.match(filename)
