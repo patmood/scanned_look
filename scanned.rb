@@ -26,7 +26,7 @@ class Scanned < Sinatra::Base
 
     # "Scan" each page
     pages.times do |page|
-      system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand*2 - 1} #{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
+      system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand - 0.5} #{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
       page_paths << "#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf"
     end
 
@@ -41,8 +41,8 @@ class Scanned < Sinatra::Base
     # Delete original upload
     File.delete("#{Dir.pwd}/uploads/#{filename}")
 
-    return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
-    # redirect "download/#{filename_stripped}-scanned.pdf"
+    # return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
+    redirect "download/#{filename_stripped}-scanned.pdf"
 
 
   end
