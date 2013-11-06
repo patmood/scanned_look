@@ -1,5 +1,10 @@
 class Scanned < Sinatra::Base
 
+  configure do
+    enable :sessions
+    set :session_secret, "THISPROBSHOULDNTBEONGITHUBLOL"
+  end
+
   get "/" do
     erb :index
   end
@@ -27,7 +32,8 @@ class Scanned < Sinatra::Base
       # Count pages
       pages = PDF::Reader.new("uploads/#{filename}").page_count
     else
-      raise "Must be PDF or image"
+      session[:notice] = "Must be PDF or image"
+      redirect "/"
     end
 
     page_paths = []

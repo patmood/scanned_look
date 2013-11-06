@@ -3,6 +3,9 @@
 <p class="center">Upload your document to transport it back in time to the 90s</br>Perfect for sending unimportant documents to old corporate types that are set in their ways.</p>
 <p class="center">Fake PDF scanner gives your file that legitimate, hardcopy paper feeling</p>
 <div id="scanner">
+  <% if session[:notice] %>
+    <p class="notice"><%= session[:notice] %></p>
+  <% end %>
   <div id="select">Choose PDF</div>
   <form action="/upload" method="post" enctype="multipart/form-data" id="uploader" hidden>
     <input type="file" name="myfile">
