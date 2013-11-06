@@ -32,6 +32,7 @@ class Scanned < Sinatra::Base
       # Count pages
       pages = PDF::Reader.new("uploads/#{filename}").page_count
     else
+      File.delete("#{Dir.pwd}/uploads/#{filename}")
       session[:notice] = "Must be PDF or image"
       redirect "/"
     end
@@ -45,6 +46,7 @@ class Scanned < Sinatra::Base
         page_paths << "#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf"
       end
     rescue
+      File.delete("#{Dir.pwd}/uploads/#{filename}")
       session[:notice] = "Failed to scan properly :("
       redirect "/"
     end
