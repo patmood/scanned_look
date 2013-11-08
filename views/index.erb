@@ -5,6 +5,7 @@
 <div id="scanner">
   <% if session[:notice] %>
     <p class="notice"><%= session[:notice] %></p>
+    <% session[:notice] = nil %>
   <% end %>
   <div id="select">Choose PDF</div>
   <form action="/upload" method="post" enctype="multipart/form-data" id="uploader" hidden>
