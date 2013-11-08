@@ -3,14 +3,17 @@
 <p class="center">Upload your document to transport it back in time to the 90s</br>Perfect for sending unimportant documents to old corporate types that are set in their ways.</p>
 <p class="center">Fake PDF scanner gives your file that legitimate, hardcopy paper feeling</p>
 <div id="scanner">
-  <% if session[:notice] %>
-    <p class="notice"><%= session[:notice] %></p>
-    <% session[:notice] = nil %>
-  <% end %>
+
   <div id="select">Choose PDF</div>
   <form action="/upload" method="post" enctype="multipart/form-data" id="uploader" hidden>
     <input type="file" name="myfile">
   </form>
+
+  <% if session[:notice] %>
+    <p class="notice"><%= session[:notice] %></p>
+    <% session[:notice] = nil %>
+  <% end %>
+
 </div>
 <p class="center">Privacy Note: Files are deleted from our server immediately after you download</p>
 <p class="center">Questions? Comments? Compliments? Hit me up on twitter <a href="https://twitter.com/patmood">@patmood</a></p>

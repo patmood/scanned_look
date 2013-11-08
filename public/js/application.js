@@ -5,6 +5,7 @@ $(document).ready( function(){
   })
 
   $('#uploader input').change(function() {
+    $('.processing').show();
     $('#uploader').submit();
   })
 
