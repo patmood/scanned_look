@@ -1,10 +1,5 @@
 class Scanned < Sinatra::Base
 
-  configure do
-    enable :sessions
-    set :session_secret, "THISPROBSHOULDNTBEONGITHUBLOL"
-  end
-
   get "/" do
     erb :index
   end
@@ -18,7 +13,6 @@ class Scanned < Sinatra::Base
   end
 
   post "/upload" do
-    session[:notice] = nil
     tempfile = params['myfile'][:tempfile]
     filename = params['myfile'][:filename]
     filename.gsub!(/\s/,"") if /\s/.match(filename)
@@ -33,8 +27,7 @@ class Scanned < Sinatra::Base
       pages = PDF::Reader.new("uploads/#{filename}").page_count
     else
       File.delete("#{Dir.pwd}/uploads/#{filename}")
-      session[:notice] = "Must be PDF or image"
-      redirect "/"
+      return "Must be PDF or image"
     end
 
     page_paths = []
@@ -47,16 +40,14 @@ class Scanned < Sinatra::Base
       end
     rescue
       File.delete("#{Dir.pwd}/uploads/#{filename}")
-      session[:notice] = "Failed to scan properly :("
-      redirect "/"
+      return "Failed to scan properly :("
     end
 
     # Combine pages into single PDF
     begin
       system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename_stripped}-scanned.pdf #{page_paths.join(' ')}")
     rescue
-      session[:notice] = "Failed to combine pages :("
-      redirect "/"
+      return "Failed to combine pages :("
     end
 
     # Delete scanned pages
@@ -67,7 +58,7 @@ class Scanned < Sinatra::Base
     # Delete original upload
     File.delete("#{Dir.pwd}/uploads/#{filename}")
 
-    return "download/#{filename_stripped}-scanned.pdf"
+    return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
     # redirect "download/#{filename_stripped}-scanned.pdf"
 
 
