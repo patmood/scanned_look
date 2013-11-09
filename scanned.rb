@@ -15,8 +15,7 @@ class Scanned < Sinatra::Base
   post "/upload" do
     tempfile = params['myfile'][:tempfile]
     filename = params['myfile'][:filename]
-    filename.gsub!(/\s/,"") if /\s/.match(filename)
-    filename_stripped = filename.gsub(/\.\w+\z/,"")
+    filename.gsub!(/(\.\w+\z)|\s|\W/,"")
     FileUtils.copy(tempfile.path, "uploads/#{filename}")
 
     # Check input
@@ -35,8 +34,8 @@ class Scanned < Sinatra::Base
     # "Scan" each page
     begin
       pages.times do |page|
-        system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand - 0.5} #{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf")
-        page_paths << "#{Dir.pwd}/converted/#{filename_stripped}-#{page}-scanned.pdf"
+        system("convert #{Dir.pwd}/uploads/#{filename}[#{page}] -mattecolor gray99 -frame 1x1+1 -colorspace gray \\( +clone -blur 0x1 \\) +swap -compose divide -resize 800 -composite -contrast-stretch 5%,0% -rotate #{rand - 0.5} #{Dir.pwd}/converted/#{filename}-#{page}-scanned.pdf")
+        page_paths << "#{Dir.pwd}/converted/#{filename}-#{page}-scanned.pdf"
       end
     rescue
       File.delete("#{Dir.pwd}/uploads/#{filename}")
@@ -45,12 +44,13 @@ class Scanned < Sinatra::Base
 
     # Combine pages into single PDF
     begin
-      system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename_stripped}-scanned.pdf #{page_paths.join(' ')}")
+      system("gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=#{Dir.pwd}/converted/#{filename}-scanned.pdf #{page_paths.join(' ')}")
     rescue
       return "Failed to combine pages :("
     end
 
     # Delete scanned pages
+    p page_paths
     page_paths.each do |page|
       File.delete(page)
     end
@@ -58,8 +58,8 @@ class Scanned < Sinatra::Base
     # Delete original upload
     File.delete("#{Dir.pwd}/uploads/#{filename}")
 
-    return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
-    # redirect "download/#{filename_stripped}-scanned.pdf"
+    return "The file was successfully scanned! <a href='download/#{filename}-scanned.pdf'>Download!</a>"
+    # redirect "download/#{filename}-scanned.pdf"
 
 
   end
