@@ -7,6 +7,8 @@ function fileSelected() {
     else
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
   }
+
+  uploadFile();
 }
 
 function uploadFile() {
@@ -36,13 +38,12 @@ function uploadProgress(e) {
 }
 
 function uploadComplete(e) {
-
   var downloadBox = document.createElement('div');
   downloadBox.className = 'success';
   downloadBox.innerHTML = 'The file was successfully scanned! <a href="' + e.target.responseText + '">Download!</a>'
   document.getElementById('scanner').appendChild(downloadBox);
   document.getElementById('processing').style.display = 'none';
-  // alert(e.target.responseText);
+  document.getElementById('progress').style.display = 'none';
 }
 
 function uploadFailed(e) {
