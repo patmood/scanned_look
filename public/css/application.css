@@ -60,6 +60,7 @@ h2 {
   background: #FFB5B5;
   border: solid 1px #FF0000;
   border-radius: 5px;
+  margin: 20px;
 }
 .success {
   text-align: center;
@@ -67,6 +68,22 @@ h2 {
   background: #A9EEB1;
   border: solid 1px #36C246;
   border-radius: 5px;
+  margin: 20px;
+}
+#progress {
+  width: 400px;
+  height: 20px;
+  border-radius: 5px;
+  border: solid 1px #666;
+  margin: 10px auto;
+  background-color: #fff;
+  padding: 2px;
+  display: none;
+}
+#bar {
+  height: 100%;
+  background-color: #FF0000;
+  border-radius: 5px
 }
 #processing {
   display: none;
@@ -77,7 +94,7 @@ h2 {
   background: rgba(0, 0, 0, .8);
   z-index: 90;
 }
-.processing h2 {
+#processing h2 {
   color: #fff;
 }
 .gears {

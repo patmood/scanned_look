@@ -6,16 +6,14 @@ function fileSelected() {
       fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
     else
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-
-    document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
-    document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
-    document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
   }
 }
 
 function uploadFile() {
   var xhr = new XMLHttpRequest();
   var fd = new FormData();
+
+  document.getElementById('progress').style.display = 'block';
 
   fd.append("myfile", document.getElementById('myfile').files[0]);
 
@@ -33,10 +31,7 @@ function uploadFile() {
 function uploadProgress(e) {
   if (e.lengthComputable) {
     var percentComplete = Math.round(e.loaded * 100 / e.total);
-    document.getElementById('progessNumber').innerHTML = 'Progress: ' + percentComplete.toString() + '%';
-  }
-  else {
-    document.getElementById('progressNumber').innerHTML = 'unable to compute';
+    document.getElementById('bar').style.width = percentComplete.toString() + '%';
   }
 }
 
