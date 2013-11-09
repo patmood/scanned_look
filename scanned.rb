@@ -67,8 +67,8 @@ class Scanned < Sinatra::Base
     # Delete original upload
     File.delete("#{Dir.pwd}/uploads/#{filename}")
 
-    # return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
-    redirect "download/#{filename_stripped}-scanned.pdf"
+    return "The file was successfully scanned! <a href='download/#{filename_stripped}-scanned.pdf'>Download!</a>"
+    # redirect "download/#{filename_stripped}-scanned.pdf"
 
 
   end

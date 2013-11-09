@@ -4,10 +4,19 @@
 <p class="center">Fake PDF scanner gives your file that legitimate, hardcopy paper feeling</p>
 <div id="scanner">
 
-  <div id="select">Choose PDF</div>
-  <form action="/upload" method="post" enctype="multipart/form-data" id="uploader" hidden>
-    <input type="file" name="myfile">
+
+  <form id="form1" enctype="multipart/form-data" method="post" action="/upload">
+    <input type="file" name="myfile" id="myfile" onchange="fileSelected(); uploadFile()"><br>
+    <div id="fileName"></div>
+    <div id="fileSize"></div>
+    <div id="fileType"></div>
+    <div id="progessNumber"></div>
   </form>
+
+
+
+  <div id="select" onclick="document.getElementById('myfile').click()">Choose PDF</div>
+
 
   <% if session[:notice] %>
     <p class="notice"><%= session[:notice] %></p>
