@@ -7,9 +7,9 @@ function fileSelected() {
     else
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
-    document.getElementById('fileName').innerHTML = 'Name:' + file.name;
-    document.getElementById('fileSize').innerHTML = 'Size:' + fileSize;
-    document.getElementById('fileType').innerHTML = 'Type:' + file.type;
+    document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+    document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+    document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
   }
 }
 
@@ -26,12 +26,14 @@ function uploadFile() {
 
   xhr.open("POST", "/upload");
   xhr.send(fd);
+
+  document.getElementById('processing').style.display = 'block';
 }
 
 function uploadProgress(e) {
   if (e.lengthComputable) {
     var percentComplete = Math.round(e.loaded * 100 / e.total);
-    document.getElementById('progessNumber').innerHTML = percentComplete.toString() + '%';
+    document.getElementById('progessNumber').innerHTML = 'Progress: ' + percentComplete.toString() + '%';
   }
   else {
     document.getElementById('progressNumber').innerHTML = 'unable to compute';
@@ -39,14 +41,22 @@ function uploadProgress(e) {
 }
 
 function uploadComplete(e) {
-  alert(e.target.responseText);
+
+  var downloadBox = document.createElement('div');
+  downloadBox.className = 'success';
+  downloadBox.innerHTML = 'The file was successfully scanned! <a href="' + e.target.responseText + '">Download!</a>'
+  document.getElementById('scanner').appendChild(downloadBox);
+  document.getElementById('processing').style.display = 'none';
+  // alert(e.target.responseText);
 }
 
 function uploadFailed(e) {
+  document.getElementById('processing').style.display = 'none';
   alert("There was an error attempting to upload the file");
 }
 
 function uploadCanceled(e) {
+  document.getElementById('processing').style.display = 'none';
   alert("The upload has been canceled by the user or the browser dropped the connection");
 }
 
