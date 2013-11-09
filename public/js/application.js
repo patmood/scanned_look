@@ -8,7 +8,11 @@ function fileSelected() {
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
   }
 
-  uploadFile();
+  if (file.type.match(/image\//g) || file.type.match(/application\/pdf/g)) {
+    uploadFile();
+  } else {
+    alert("Must be PDF or Image");
+  }
 }
 
 function uploadFile() {
