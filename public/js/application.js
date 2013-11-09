@@ -44,7 +44,7 @@ function uploadProgress(e) {
 function uploadComplete(e) {
   var downloadBox = document.createElement('div');
   downloadBox.className = 'success';
-  downloadBox.innerHTML = 'The file was successfully scanned! <a href="' + e.target.responseText + '">Download!</a>'
+  downloadBox.innerHTML = e.target.responseText;
   document.getElementById('scanner').appendChild(downloadBox);
   document.getElementById('processing').style.display = 'none';
   document.getElementById('progress').style.display = 'none';
