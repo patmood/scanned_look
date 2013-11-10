@@ -9,6 +9,8 @@ function fileSelected() {
   }
 
   if (file.type.match(/image\//g) || file.type.match(/application\/pdf/g)) {
+    var oldDownload = document.getElementById('downloadBox');
+    if (oldDownload) oldDownload.parentNode.removeChild(oldDownload);
     uploadFile();
   } else {
     alert("Must be PDF or Image");
@@ -44,6 +46,7 @@ function uploadProgress(e) {
 function uploadComplete(e) {
   var downloadBox = document.createElement('div');
   downloadBox.className = 'success';
+  downloadBox.id = 'downloadBox'
   downloadBox.innerHTML = e.target.responseText;
   document.getElementById('scanner').appendChild(downloadBox);
   document.getElementById('processing').style.display = 'none';
