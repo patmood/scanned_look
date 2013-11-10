@@ -32,14 +32,13 @@ function uploadFile() {
 
   xhr.open("POST", "/upload");
   xhr.send(fd);
-
-  document.getElementById('processing').style.display = 'block';
 }
 
 function uploadProgress(e) {
   if (e.lengthComputable) {
     var percentComplete = Math.round(e.loaded * 100 / e.total);
     document.getElementById('bar').style.width = percentComplete.toString() + '%';
+    if (percentComplete >= 100) document.getElementById('processing').style.display = 'block';
   }
 }
 
