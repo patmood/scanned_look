@@ -1,5 +1,10 @@
 function fileSelected() {
   var file = document.getElementById('myfile').files[0];
+  if (file.size > 1024 * 1024 * 10) {
+    alert("10MB maximum file size");
+    return false;
+  }
+
   if (file) {
     var fileSize = 0;
     if (file.size > 1024 * 1024)
