@@ -25,6 +25,7 @@ class Scanned < Sinatra::Base
       # Count pages
       pages = PDF::Reader.new("uploads/#{filename}").page_count
       if pages > 50
+        File.delete("#{Dir.pwd}/uploads/#{filename}")
         return "Too many pages! 50 page limit."
       end
     else
