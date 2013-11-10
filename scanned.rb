@@ -50,7 +50,6 @@ class Scanned < Sinatra::Base
     end
 
     # Delete scanned pages
-    p page_paths
     page_paths.each do |page|
       File.delete(page)
     end
