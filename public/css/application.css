@@ -90,13 +90,12 @@ h3 { font-size: 24px; }
   margin: 10px auto;
   background-color: #fff;
   padding: 2px;
-  display: block;
+  display: none;
 }
 #bar {
   height: 100%;
   background-color: #FF0000;
   border-radius: 5px;
-  width: 69%;
 }
 #progessNumber {
   margin: 0 5px;
