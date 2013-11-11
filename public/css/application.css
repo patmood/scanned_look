@@ -1,6 +1,9 @@
 @import url(http://fonts.googleapis.com/css?family=Francois+One);
+p {
+  line-height: 1.5em;
+}
 
-h1, h2 {
+h1, h2, h3 {
   font-family: 'Francois One', sans-serif;
   color: #222;
   text-align: center;
@@ -15,12 +18,21 @@ h1 {
 
 h2 {
   font-weight: normal;
-  font-size: 32px;
+  font-size: 34px;
 }
+h3 { font-size: 24px; }
 
+.fine-print { font-size: 12px; }
 .center { text-align: center; }
 .center img { margin: auto; }
-.container { padding: 10px; position: relative;}
+.container {
+  margin: 10px auto;
+  padding: 10px;
+  position: relative;
+  border: solid 1px #999;
+  border-radius: 10px;
+  max-width: 700px;
+}
 
 #scanner {
   max-width: 500px;
@@ -78,12 +90,18 @@ h2 {
   margin: 10px auto;
   background-color: #fff;
   padding: 2px;
-  display: none;
+  display: block;
 }
 #bar {
   height: 100%;
   background-color: #FF0000;
-  border-radius: 5px
+  border-radius: 5px;
+  width: 69%;
+}
+#progessNumber {
+  margin: 0 5px;
+  text-align: right;
+  color: #fff;
 }
 #processing {
   display: none;

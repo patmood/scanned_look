@@ -43,6 +43,7 @@ function uploadProgress(e) {
   if (e.lengthComputable) {
     var percentComplete = Math.round(e.loaded * 100 / e.total);
     document.getElementById('bar').style.width = percentComplete.toString() + '%';
+    document.getElementById('progessNumber').innerHTML = percentComplete.toString() + '%';
     if (percentComplete >= 100) document.getElementById('processing').style.display = 'block';
   }
 }
