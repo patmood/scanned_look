@@ -15,8 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
 app.use(express.bodyParser({
-  keepExtensions: true
-, uploadDir: __dirname + '/temp'
+  uploadDir: __dirname + '/temp'
 }))
 app.use(app.router)
 app.use(express.static(path.join(__dirname, 'public')))

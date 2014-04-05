@@ -3,7 +3,7 @@ var fs = require('fs')
   , mime = require('mime')
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' })
+  res.render('index', { title: 'Scanned Look' })
 }
 
 exports.upload = function(req, res){
