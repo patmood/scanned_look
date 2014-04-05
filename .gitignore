@@ -2,6 +2,7 @@
 /converted/*
 /tmp
 /log
+/temp
 
 # OS generated files #
 ######################
@@ -30,3 +31,5 @@ results
 npm-debug.log
 node_modules
 data
+*.swp
+*.swo
