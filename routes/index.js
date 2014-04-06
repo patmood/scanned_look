@@ -9,6 +9,7 @@ exports.index = function(req, res){
 
 exports.upload = function(req, res){
   var form = new formidable.IncomingForm()
+  form.keepExtensions = true
 
   form.parse(req, function(err, fields, files) {
     if (err) throw err
