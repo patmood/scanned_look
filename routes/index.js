@@ -49,7 +49,9 @@ exports.upload = function(req, res){
 }
 
 var numPages = function(file, next){
-  exec('pdftk ' + file.path + ' dump_data | grep NumberOfPages | sed "s/[^0-9]*//"'
+  var cmd = 'strings ' + file.path + ' | grep Count | grep -o "[0-9]\\+"' 
+  console.log(cmd)
+  exec(cmd
   , function(err, stdout, stderr){
     if (err) throw err
     if (stderr) console.log("Error counting pages:", stderr)
