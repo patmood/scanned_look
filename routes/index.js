@@ -14,7 +14,7 @@ exports.upload = function(req, res){
     if (err) throw err
     
     var file = files.scanMe
-      , filename = files.scanMe.name.replace(/\.\w+$/i, '')
+      , filename = files.scanMe.name.replace(/\.\w+$/i, '') + '_scan.pdf'
       , mimetype = files.scanMe.type 
 
     console.log('File Path:', file.path)
@@ -37,21 +37,29 @@ exports.upload = function(req, res){
           })
         } else {
           console.log(scannedPages)
-          res.send('woo')
+          var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
+          + '-sOutputFile='
+          + './tmp/'
+          + filename
+          + scannedPages.join(' ')
+          
+          console.log(cmd)
+
+          exec(cmd
+          , function(){
+            res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(filename))
+            res.setHeader('Content-type', 'application/pdf')
+            fs.createReadStream('./tmp/' + filename).pipe(res)    
+          })
         }
       }(0)
 
-//      res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(result))
-//      res.setHeader('Content-type', 'application/pdf')
-//      fs.createReadStream(file.path).pipe(res)    
     })
   })
 }
 
 var numPages = function(file, next){
-  var cmd = 'strings ' + file.path + ' | grep Count | grep -o "[0-9]\\+"' 
-  console.log(cmd)
-  exec(cmd
+  exec('strings ' + file.path + ' | grep Count | grep -o "[0-9]\\+"'
   , function(err, stdout, stderr){
     if (err) throw err
     if (stderr) console.log("Error counting pages:", stderr)
@@ -62,8 +70,12 @@ var numPages = function(file, next){
 }
 
 var scan = function(file, i, next){
-  var result = file.name.replace(/\.\w+$/i, '') + '_' + i + '_scan.pdf'
-  console.log('RESULT:',result)
+  var result = './tmp/' 
+  + file.name.replace(/\.\w+$/i, '') 
+  + '_scan' + '_part' + i + '.pdf'
+
+  console.log(result)
+
   exec('convert ' 
     + file.path + '[' + i + ']'
     + ' -mattecolor gray99 -frame 1x1+1 -colorspace gray '
