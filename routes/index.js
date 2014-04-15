@@ -38,9 +38,9 @@ exports.upload = function(req, res){
         } else {
           console.log(scannedPages)
           var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
-          + '-sOutputFile='
-          + './tmp/'
+          + '-sOutputFile=./tmp/'
           + filename
+          + ' '
           + scannedPages.join(' ')
           
           console.log(cmd)
