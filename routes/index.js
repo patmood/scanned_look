@@ -25,43 +25,49 @@ exports.upload = function(req, res){
       return
     }
 
-    // Callback Hell
-    numPages(file, function(pageCount) {
-      var scannedPages = []
+    var scannedPages = []
+      , maxPages = 50
 
-      !function loop(i) {
-        if (i < pageCount) {
-          scan(file, i, function(result) {
+    // Self invoking recursion FTW
+    !function loop(i) {
+      if (i < maxPages) {
+        scan(file, i, function(result) {
+          if(result === 'done') {
+            console.log(scannedPages)
+            i = maxPages
+            var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
+            + '-sOutputFile=./tmp/'
+            + filename
+            + ' '
+            + scannedPages.join(' ')
+            
+            console.log(cmd)
+
+            exec(cmd
+            , function(){
+              res.setHeader('Content-disposition'
+              , 'attachment; filename=' + path.basename(filename))
+              res.setHeader('Content-type', 'application/pdf')
+              fs.createReadStream('./tmp/' + filename).pipe(res)   
+            })
+
+            return
+
+          } else {
             scannedPages.push(result)
             loop(++i)
-          })
-        } else {
-          console.log(scannedPages)
-          var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
-          + '-sOutputFile=./tmp/'
-          + filename
-          + ' '
-          + scannedPages.join(' ')
-          
-          console.log(cmd)
-
-          exec(cmd
-          , function(){
-            res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(filename))
-            res.setHeader('Content-type', 'application/pdf')
-            fs.createReadStream('./tmp/' + filename).pipe(res)    
-          })
-        }
-      }(0)
-
-    })
+          }
+        })
+      }
+    }(0)
   })
 }
 
+// NOT USED - This doesnt work for all PDF types :(
 var numPages = function(file, next){
   exec('strings ' + file.path + ' | grep Count | grep -o "[0-9]\\+"'
   , function(err, stdout, stderr){
-    if (err) throw err
+    if (err) throw err 
     if (stderr) console.log("Error counting pages:", stderr)
     console.log("Number of Pages:", stdout)
     if (next) next(stdout)
@@ -72,9 +78,7 @@ var numPages = function(file, next){
 var scan = function(file, i, next){
   var result = './tmp/' 
   + file.name.replace(/\.\w+$/i, '') 
-  + '_scan' + '_part' + i + '.pdf'
-
-  console.log(result)
+  + '_scan' + '_part' + i + '.pdf' 
 
   exec('convert ' 
     + file.path + '[' + i + ']'
@@ -85,7 +89,11 @@ var scan = function(file, i, next){
     + ' ' 
     + result
   , function(err, stout, sterr){
-    if (err) throw err
+    console.log(result)
+
+    // When an error is raised, it means we're done converting
+    // Not very tidy but avoids dependencies to count the number of pages
+    if (err) next('done')
     if (next) next(result)
     return result
   })
