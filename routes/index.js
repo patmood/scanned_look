@@ -88,7 +88,7 @@ var scan = function(file, i, next){
 
     // When an error is raised, it means we're done converting
     // Not very tidy but avoids dependencies to count the number of pages
-    if (err) next('done')
+    if (err) throw err //next('done')
     if (next) next(result)
     return result
   })
