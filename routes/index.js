@@ -26,39 +26,38 @@ exports.upload = function(req, res){
     }
 
     var scannedPages = []
-      , maxPages = 50
+      , maxPages = 12 
 
     // Self invoking recursion FTW
     !function loop(i) {
-      if (i < maxPages) {
-        scan(file, i, function(result) {
-          if(result === 'done') {
-            console.log(scannedPages)
-            i = maxPages
-            var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
-            + '-sOutputFile=./tmp/'
-            + filename
-            + ' '
-            + scannedPages.join(' ')
-            
-            console.log(cmd)
+      scan(file, i, function(result) {
+        if(result === 'done' || i > maxPages) {
+          console.log(scannedPages)
+          i = maxPages
 
-            exec(cmd
-            , function(){
-              res.setHeader('Content-disposition'
-              , 'attachment; filename=' + path.basename(filename))
-              res.setHeader('Content-type', 'application/pdf')
-              fs.createReadStream('./tmp/' + filename).pipe(res)   
-            })
+          var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
+          + '-sOutputFile=/tmp/'
+          + filename
+          + ' '
+          + scannedPages.join(' ')
+          
+          console.log(cmd)
 
-            return
+          exec(cmd
+          , function(){
+            res.setHeader('Content-disposition'
+            , 'attachment; filename=' + path.basename(filename))
+            res.setHeader('Content-type', 'application/pdf')
+            fs.createReadStream('/tmp/' + filename).pipe(res)   
+          })
 
-          } else {
-            scannedPages.push(result)
-            loop(++i)
-          }
-        })
-      }
+          return
+
+        } else {
+          scannedPages.push(result)
+          loop(++i)
+        }
+      })
     }(0)
   })
 }
@@ -76,7 +75,7 @@ var numPages = function(file, next){
 }
 
 var scan = function(file, i, next){
-  var result = './tmp/' 
+  var result = '/tmp/' 
   + file.name.replace(/\.\w+$/i, '') 
   + '_scan' + '_part' + i + '.pdf' 
 
