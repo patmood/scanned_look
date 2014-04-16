@@ -12,10 +12,12 @@ exports.upload = function(req, res){
   var form = new formidable.IncomingForm()
   form.parse(req, function(err, fields, files) {
     if (err) throw err
-    
-    var file = files.scanMe
-      , filename = files.scanMe.name.replace(/\.\w+$/i, '') + '_scan.pdf'
-      , mimetype = files.scanMe.type 
+
+    console.log(files)
+        
+    var file = files.myfile
+      , filename = files.myfile.name.replace(/\.\w+$/i, '') + '_scan.pdf'
+      , mimetype = files.myfile.type 
 
     console.log('File Path:', file.path)
     console.log('File Type:', mimetype)
