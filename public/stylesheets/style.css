@@ -1,29 +1,49 @@
-@import url(http://fonts.googleapis.com/css?family=Francois+One);
+body {
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+   font-weight: 300;
+}
+h1, h2, h3 {
+  line-height: 1.1em;
+  letter-spacing: normal;
+  color: #222;
+}
+h1 { font-weight: 900; }
+h2 {
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+h3 {
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
 p {
   line-height: 1.5em;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #444;
 }
-
-h1, h2, h3 {
-  font-family: 'Francois One', sans-serif;
-  color: #222;
+a {
+  color: #428bca;
+  text-decoration: none;
+}
+a:hover, a:focus {
+  color: #005580;
+  text-decoration: underline;
+}
+button, .button {
+  background-color: #95a5a6;
+  color: #fff;
   text-align: center;
-  margin: 0.2em;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  position: relative;
+  padding: 0.3em 1em;
 }
+button:hover, .button:hover { background-color: #7f8c8d; }
 
-h1 {
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 72px;
-}
-
-h2 {
-  font-weight: normal;
-  font-size: 34px;
-}
-h3 { font-size: 24px; }
-
-.fine-print { font-size: 12px; }
-.center { text-align: center; }
 .center img { margin: auto; }
 .container {
   margin: 10px auto;
