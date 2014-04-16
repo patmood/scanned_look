@@ -33,7 +33,6 @@ exports.upload = function(req, res){
       scan(file, i, function(result) {
         if(result === 'done' || i > maxPages) {
           console.log(scannedPages)
-          i = maxPages
 
           var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
           + '-sOutputFile=/tmp/'
@@ -43,15 +42,12 @@ exports.upload = function(req, res){
           
           console.log(cmd)
 
-          exec(cmd
-          , function(){
+          exec(cmd, function(){
             res.setHeader('Content-disposition'
             , 'attachment; filename=' + path.basename(filename))
             res.setHeader('Content-type', 'application/pdf')
             fs.createReadStream('/tmp/' + filename).pipe(res)   
           })
-
-          return
 
         } else {
           scannedPages.push(result)
