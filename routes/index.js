@@ -30,8 +30,8 @@ exports.upload = function(req, res){
 
     // Self invoking recursion FTW
     !function loop(i) {
-      scan(file, i, function(result) {
-        if(result === 'done' || i > maxPages) {
+      scan(file, i, function(err, result) {
+        if(err || i > maxPages) {
           console.log(scannedPages)
 
           var cmd = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '
@@ -88,8 +88,7 @@ var scan = function(file, i, next){
 
     // When an error is raised, it means we're done converting
     // Not very tidy but avoids dependencies to count the number of pages
-    if (err) throw err //next('done')
-    if (next) next(result)
-    return result
+    if (err) return next(err)
+    return next(null, result)
   })
 }
