@@ -17,8 +17,11 @@
 
     <div class="scanner-container">
       <div class="scanner">
+        <div class="controls">
+          <button id="scanButton" onclick="scanner.scanAll()" disabled>Scan</button>
+        </div>
         <div class="scanner-bed">
-          <canvas id="pdf-canvas"></canvas>
+          <canvas id="pdfCanvas"></canvas>
         </div>
       </div>
     </div>
