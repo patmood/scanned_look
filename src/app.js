@@ -1,14 +1,14 @@
 var url = './sample.pdf'
 
 const CONTRAST_SCALE = 10
-const ROTATION_SCALE = 1
-
+const ROTATION_SCALE = 0.8
+const NOISE_FACTOR = 200
+const NOISE_RADIUS = 1
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var pdfjsLib = window['pdfjs-dist/build/pdf']
 pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js'
 
 function handleFileChange(file) {
-  console.log(file)
   const reader = new FileReader()
   reader.onload = function (evt) {
     var typedarray = new Uint8Array(evt.target.result)
@@ -60,6 +60,21 @@ function processCanvas(canvas) {
 
   // Overwrite original image
   inMemoryContext.putImageData(imageData, 0, 0)
+
+  // Add noise
+  inMemoryContext.fillStyle = '#eee'
+  for (let i = 0; i < NOISE_FACTOR; i++) {
+    inMemoryContext.beginPath()
+    inMemoryContext.arc(
+      Math.random() * width,
+      Math.random() * height,
+      NOISE_RADIUS,
+      0,
+      2 * Math.PI,
+      true
+    )
+    inMemoryContext.fill()
+  }
 
   // Clear canvas (without this pages will stack)
   // context.clearRect(0, 0, width, height)

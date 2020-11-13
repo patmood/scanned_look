@@ -6,7 +6,5 @@ Scanned look will make your document black and white, a little blurry, and sligh
 
 ## TODO
 
-- Add slight borders
 - Shadows
 - Page folds
-- contrast
