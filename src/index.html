@@ -6,7 +6,11 @@
   </head>
 
   <body>
-    <h1>PDF.js 'Hello, world!' example</h1>
+    <h1>Scanned Look</h1>
+
+    <div>
+      <input type="file" onchange="handleFileChange(this.files[0])" accept=".pdf" />
+    </div>
 
     <canvas id="pdf-canvas"></canvas>
     <script src="pdf.min.js"></script>
