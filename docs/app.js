@@ -106,6 +106,8 @@ class Scanner {
 
     // Clear canvas (without this pages will stack)
     context.clearRect(0, 0, width, height)
+    context.fillStyle = '#000'
+    context.fillRect(0, 0, width, height)
 
     // Rotate clockwise in radians
     const degrees = Math.random() * 2 * ROTATION_SCALE - ROTATION_SCALE
@@ -128,11 +130,13 @@ class Scanner {
   }
 
   download() {
-    const doc = new jsPDF({ unit: 'px' })
-    console.log(this.scannedPages)
+    const doc = new jsPDF()
     this.scannedPages.forEach((img) => {
-      doc.addPage([img.width, img.height]).addImage(img.data, 'JPEG', 0, 0)
+      doc.addPage([img.width, img.height])
+      doc.addImage(img.data, 'JPEG', 0, 0, img.width, img.height, 'alias', 'NONE')
     })
+    // First page wont be the right size
+    doc.deletePage(1)
     doc.save('scanned.pdf')
   }
 }
