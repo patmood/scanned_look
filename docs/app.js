@@ -4,7 +4,8 @@ const ROTATION_SCALE = 0.8
 const NOISE_FACTOR = 200
 const NOISE_RADIUS = 1
 
-// Loaded via <script> tag, create shortcut to access PDF.js exports.
+// Get global libs
+const { jsPDF } = window.jspdf
 const pdfjsLib = window['pdfjs-dist/build/pdf']
 pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js'
 
@@ -50,15 +51,17 @@ class Scanner {
   }
 
   async scanAll() {
+    this.scannedPages = []
     let delayTimeout = 500
     for (let pageNum = 1; pageNum <= this.pdf.numPages; pageNum++) {
-      this.scannedPages = []
       await this.renderPage(pageNum)
-      this.scannedPages.push(this.scanPage())
+      const scanResult = this.scanPage()
+      this.scannedPages.push(scanResult)
       await delay(delayTimeout)
       // Speed up as the pages go on
       delayTimeout = Math.max(delayTimeout - 100, 100)
     }
+    this.download()
   }
 
   scanPage() {
@@ -120,15 +123,21 @@ class Scanner {
     context.rotate(-rotation)
     context.translate(-degrees * 2, -degrees * 2)
 
-    const scannedImageData = context.getImageData(0, 0, width - 1, height - 1)
+    const scannedImageData = { data: this.canvas.toDataURL('image/jpeg'), height, width }
     return scannedImageData
+  }
+
+  download() {
+    const doc = new jsPDF({ unit: 'px' })
+    console.log(this.scannedPages)
+    this.scannedPages.forEach((img) => {
+      doc.addPage([img.width, img.height]).addImage(img.data, 'JPEG', 0, 0)
+    })
+    doc.save('scanned.pdf')
   }
 }
 
 let scanner = new Scanner()
 
 // TODO: remove
-async function start() {
-  await scanner.init(SAMPLE_PDF_PATH)
-}
-start()
+scanner.init(SAMPLE_PDF_PATH)
