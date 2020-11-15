@@ -27,6 +27,7 @@ class Scanner {
     this.canvas = window.pdfCanvas
     this.scanButton = window.scanButton
     this.scannedPages = []
+    this.lightbarEl = document.querySelector('.scanner-lightbar-container')
   }
 
   async init(urlOrTypedarray) {
@@ -52,6 +53,7 @@ class Scanner {
 
   async scanAll() {
     this.scannedPages = []
+    this.lightbarEl.classList.add('scanning')
     let delayTimeout = 500
     for (let pageNum = 1; pageNum <= this.pdf.numPages; pageNum++) {
       await this.renderPage(pageNum)
@@ -62,6 +64,7 @@ class Scanner {
       delayTimeout = Math.max(delayTimeout - 100, 100)
     }
     this.download()
+    this.lightbarEl.classList.remove('scanning')
   }
 
   scanPage() {
