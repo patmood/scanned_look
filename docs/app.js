@@ -136,7 +136,7 @@ class Scanner {
     const doc = new jsPDF()
     this.scannedPages.forEach((img) => {
       doc.addPage([img.width, img.height])
-      doc.addImage(img.data, 'JPEG', 0, 0, img.width, img.height, 'alias', 'NONE')
+      doc.addImage(img.data, 'JPEG', 0, 0, img.width, img.height)
     })
     // First page wont be the right size
     doc.deletePage(1)
